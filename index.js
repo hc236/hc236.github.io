@@ -211,7 +211,7 @@
         .attr("stroke-width", d => d.value >= 10 ? 1 : 0)
         .style("fill", d => color(d.value))
         .style("cursor", "pointer")
-        .on("mouseover", mouseover)
+        .on("mouseenter", mouseover)
         .on("mousemove", mousemove)
         .on("mouseleave", mouseleave)
         .on("click", (event, d) => update(dailyFilter(d.date)));
@@ -482,6 +482,16 @@
       .attr("d", ribbon)
       .attr("fill", d => color1(names[d.source.index]))
       .style("mix-blend-mode", "multiply")
+      .attr('class', function(d) {
+        return `ribbon ribbon${d.source.index} ribbon${d.target.index}`;
+      })
+      .on('mouseenter', function() {
+        svg.selectAll('.ribbon').attr('opacity', 0.1);
+        d3.select(this).attr('opacity', 1);
+      })
+      .on('mouseleave', function() {
+        svg.selectAll('.ribbon').attr('opacity', 1);
+      })
     .append("title")
       .text(d => `${names[d.source.index]} and ${names[d.target.index]} ${d.source.value * 100 | 0} times`);
 
@@ -495,6 +505,19 @@
         .attr("d", arc)
         .attr("fill", d => color1(names[d.index]))
         .attr("stroke", "#fff"))
+        .attr('class', function(d) {
+            return `arc arc${d.index}`;
+          })
+          .on('mouseenter', function(event, d) {
+            svg.selectAll('.arc').attr('opacity', 0.1);
+            svg.selectAll('.ribbon').attr('opacity', 0.1);
+            d3.select(this).attr('opacity', 1);
+            svg.selectAll(`.ribbon${d.index}`).attr('opacity', 1);
+          })
+          .on('mouseleave', function() {
+            svg.selectAll('.ribbon').attr('opacity', 1);
+            svg.selectAll('.arc').attr('opacity', 1);
+          })
       .call(g => g.append("text")
         .attr("dy", -10)
       .append("textPath")
