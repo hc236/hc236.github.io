@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+<head>
+	<meta charset="utf-8">
+	<link href="index.css" rel="stylesheet">
+	<title>Eletricity Consumption Visualisation</title>
+    <script src="https://d3js.org/d3.v6.js"></script>
+    <script src="d3legend.js"></script>
+    <script src="suncalc.js"></script>
+    <script src="DataGenerator.js"></script>
+    <script src="index.js"></script>
+</head>
+
+<body>
+    <h1>Eletricity Consumption Visualisation </h1>
+    <div style="width: 70%;float: left;">
+        <div id="lineChartLegend"></div>
+        <svg id="dayLineChart"></svg>
+    </div>
+    <div id="chord" style="width: 30%; height: 415px; float: right;"></div>
+    <div id="legendDiv"></div>
+    <div style="width: 70%;"><svg id="calenderChart"></svg></div>
+    <div id="div_template"></div>
+</body>
+</html>
