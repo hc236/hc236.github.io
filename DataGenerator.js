@@ -51,31 +51,36 @@ function appliance(dateTime, {power, period, times, floating}){
             const startTime = dayTimes[time].getTime() + (Math.random() - 0.5) * 3600000 * 1.5;
             const endTime = startTime + ((period[1] - period[0]) * Math.random() + period[0]) * 60000;
             const runingPower = (power[1] - power[0]) * Math.random() + power[0];
-            runingTimes.push({startTime, endTime, runingPower});
+            runingTimes.push({startTime, endTime, runingPower, sum:0});
         }
     }
-    return function(time){
+    return {calc:function(time){
         var result = 0;
-        runingTimes.forEach(({startTime, endTime, runingPower}) => {
+        runingTimes.forEach(t => {
+            const {startTime, endTime, runingPower} = t;
             if(time >= startTime && time <= endTime){
                 result = runingPower + floating * (Math.random() - 0.5)
+                t.sum += result;
             }
         })
         return result;
-    }
+    }, runingTimes}
 }
 
 function gernerate(startDate, endDate, interval){
 
     const startTime = startDate.getTime(), endTime = endDate.getTime();
     const data = [];
+    const daysGroup = [];
     const configs = Object.entries(config);
     const days = (endTime - startTime) / 86400000;
     const timesPerDay = 86400000 / 60000 / interval;
     for(let dayIndex = 0; dayIndex < days; dayIndex++){
         const dayStartTime = startTime + dayIndex * 86400000
+        const applianceMap = {}
+        daysGroup.push(applianceMap)
         configs.forEach(([key, obj])=>{
-            obj.calc = appliance(dayStartTime, obj);
+            applianceMap[key] = appliance(dayStartTime, obj);
         })
 
         for(let timeIndex = 0; timeIndex < timesPerDay; timeIndex ++){
@@ -85,7 +90,7 @@ function gernerate(startDate, endDate, interval){
             item.Sum = 0
             item.Fridge = 0.1 + (Math.random() - 0.5) * 0.04
             
-            configs.forEach(([key, obj])=>{
+            Object.entries(applianceMap).forEach(([key, obj])=>{
                 item[key] = obj.calc(time);
                 item.Sum += item[key]
             })
@@ -96,7 +101,7 @@ function gernerate(startDate, endDate, interval){
         Object.entries(t).forEach(([key, val])=> obj[key] = key == 'date' ? `${val.getHours()}:${val.getMinutes()}` : val)
         return obj;
     }))
-    return data;
+    return {data, daysGroup};
 }
 
 // const result = gernerate(new Date(2020, 0, 1), new Date(2020, 0, 2), 10);

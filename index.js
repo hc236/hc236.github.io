@@ -347,10 +347,10 @@
             .style('margin-right','20px');
         
 
-        function update({date, tomorrow, data, times}){
+        function update({date, tomorrow, times}){
             x.domain([date, tomorrow])
-            const data_ = gernerate(date, tomorrow, 1);
-            const series = d3.stack().keys(names)(data_)
+            const {data, daysGroup} = gernerate(date, tomorrow, 1);
+            const series = d3.stack().keys(names)(data)
             
             d3.select('#lineChartLegend span')
                 .html(date.toLocaleDateString() + ' Usage 13.6 Kwh, Peak 3.8 Kw')
@@ -367,7 +367,7 @@
                 .attr("fill", ({key}) => colors(key))
                 .attr("d", area)
                 .append("title")
-                .text(({key}) => key);
+                .text((d) => d.key);
             
             beforeDawn.attr("x", x(date))
             beforeDawn.attr("width", x(times.dawn) - x(date))
