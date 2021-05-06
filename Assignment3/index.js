@@ -71,7 +71,10 @@ const matchMouseover = function(event, d, i) {
     .attr("height", 40)
     .attr("x", ()=> x - 10)
     .attr("y", ()=> y - 10)
-    .style("filter","drop-shadow(0px 0px 4px #4444dd);")
+    .style("filter",()=>{
+        let filter = d3.select(this).style("filter")
+        return filter + "drop-shadow(0px 0px 4px #4444dd);"
+    })
     .raise()
 }
 
