@@ -1,0 +1,285 @@
+<!doctype html>
+<head>
+    <title>Example</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+    <style>
+      * {
+       box-sizing: border-box; 
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .content{
+        display:flex;
+        flex-direction: row;
+        height: calc(100vh - 20vh - 47px);
+        width: 100%;
+      }
+      #map {
+        /* height: 100%;
+        width: calc(100vh - 350px);
+        display: inline-block; */
+        flex-grow: 1;
+        background: beige;
+      }
+
+      #info{
+        width: 340px;
+        background-color:white;
+        padding: 20px;
+        display: none;
+      }
+      header, footer {
+        margin: 0px;
+        padding: 5px;
+      }
+
+      header h1{
+        margin: 0px;
+        
+      }
+      footer {
+        height: 20vh;
+        overflow-x: hidden;
+      }
+      .photo-marker{
+        background-position:center; 
+        background-size:cover; 
+        width:44px; height:44px;
+        color:white; 
+        text-shadow: 2px 2px 2px rgba(50%, 50%, 50%, 0.5); 
+        padding: 3px 2px; 
+        border: 2px solid white;
+        border-radius: 5px 5px 5px 5px;
+        text-align: right;
+      }
+
+      .popup-photo{
+        background-position:center; 
+        background-size:cover; 
+        width:300px; height:300px;
+        background-color: white;
+      }
+
+      .leaflet-div-icon{
+          background-color: transparent;
+          border: 0;
+      }
+
+      /* .leaflet-popup-close-button{
+        color:black !important;
+        border-radius: 20px 20px 20px 20px;
+        box-shadow: 2px 2px 2px rgb(128 128 128 / 50%);
+        margin-top: -10px;
+        margin-right: -10px;
+        padding: 2px !important;
+        width: 20px !important;
+        height: 20px !important;
+        background-color: white !important;
+      } */
+      .photo-marker-count{
+        margin-top: -30px;
+        margin-right: -12px;
+        border-radius: 9px 9px 9px 9px;
+        padding-left:4px;
+        padding-right:4px;
+        background-color: dodgerblue;
+        height: 18px;
+        color:white;
+        min-width: 20px;
+        display:inline-block;
+        text-align:center;
+        vertical-align: middle;
+        text-shadow: 2px 2px 2px rgba(50%, 50%, 50%, 0.5);
+        box-shadow: 2px 2px 2px rgb(128 128 128 / 50%);
+      }
+      .photo-marker, .photo-marker-tip{
+        background-color: white;
+        box-shadow: 2px 2px 2px rgb(128 128 128 / 50%);
+      }
+
+      .photo-marker-tip-container{
+        width: 20px;
+        height: 10px;
+        margin-left: 12px;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .photo-marker-tip{
+        width: 12px;
+        height: 12px;
+        padding: 1px;
+        margin: -9px auto 0;
+        transform: rotate(45deg);
+      }
+
+      .photo-title {
+        font-size: 1.2em;
+        font-weight: bold;
+        margin: 5px 0 5px 0 !important;
+      }
+      
+      .photo-author-icon{
+        width: 44px;
+        height: 44px;
+        background-position:center; 
+        background-size:cover; 
+      }
+
+      .photo-author-name{
+        font-weight: bold;
+      }
+
+      .photo-author-icon, .photo-info{
+        margin: 0 5px 0 0; 
+        display: block;
+        float: left;
+      }
+
+      .photo-author::after{
+        content: "";
+        display: table;
+        clear: both;
+      }
+
+      .photo-prev, .photo-next {
+        width: 50%;
+        height: 100%;
+        float: left;
+        padding-top:135px;
+        /* display: table-cell; */
+        vertical-align: center;
+      }
+
+      .photo-prev span, .photo-next span{
+        display: inline-block;
+        width: 15px;
+        height: 30px;
+        /*background-color: rgba(100%, 0%, 0%, 0.7);*/
+        font-size: 30px;
+        color:white;
+        cursor: pointer;
+      }
+
+      
+      .photo-prev {
+        padding-left: 5px;
+      }
+
+      .photo-next {
+        padding-left: 130px;
+      }
+      .photo-index{
+        position:absolute;
+        width: 300px;
+        text-align: center;
+        top:340px;
+        color:white;
+        text-shadow: 2px 2px 2px rgba(50%, 50%, 50%, 0.7); 
+      }
+      .photo-group{
+        width: 80px;
+        height: 80px;
+        float: left;
+        color:white;
+        padding: 5px;
+        margin: 2px;
+        background-size: cover;
+        font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        text-shadow: 2px 2px 2px rgba(20%, 20%, 20%, 0.7);
+        box-shadow: 2px 2px 2px rgb(128 128 128 / 50%);
+        cursor: pointer;
+      }
+
+      .photo-group-title{
+        /* margin-top: 55px; */
+        display: block;
+        position:relative;
+        top:35px;
+      }
+
+      .photo-group-count{
+        border-radius: 9px 9px 9px 9px;
+        padding-left:4px;
+        padding-right:4px;
+        background-color: dodgerblue;
+        height: 18px;
+        color:white;
+        min-width: 20px;
+        display:inline-block;
+        text-align:center;
+        vertical-align: middle;
+        text-shadow: 2px 2px 2px rgba(50%, 50%, 50%, 0.5);
+        box-shadow: 2px 2px 2px rgb(128 128 128 / 50%);
+      }
+      .info-close{
+        position: relative;
+        display: inline-block;
+        color: black !important;
+        top: 48px !important;
+      }
+      .filter-control{
+        padding: 5px 1.2em 5px 1.2em;
+        background-color:white;
+        /* border-radius: 12px 12px 12px 12px; */
+        border-radius: 1.2em;
+        cursor: pointer;
+        margin-bottom: 0 !important;
+      }
+      .filter-control span{
+        font-size:1.2em;
+        padding: 2px 0.7em;
+        border-radius: 0.7em;
+        cursor: pointer;
+      }
+
+      .filter-control span.selected{
+        background-color: lightgrey;
+      }
+    </style>
+    <link rel="stylesheet" href="css/lightgallery.css">
+    <script src="js/lightgallery.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css">
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
+   <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster-src.js"></script>
+   <script src="https://kit.fontawesome.com/a42efbeeb2.js" crossorigin="anonymous"></script>
+   <script src="https://d3js.org/d3.v6.js"></script>
+   <script defer src="index.js"></script>
+</head>
+
+<body>
+  <header>
+      <h1>Photo Explorer</h1>
+  </header>
+  <div class="content">
+    <div id="map"></div>
+    <div id="info" class="leaflet-container">
+      <a class="leaflet-popup-close-button info-close" href="#close">×</a>
+      <div class="popup-photo" style="background-image:url('');">
+          <div class="photo-prev"><span class="fas fa-angle-left"></span></div>
+          <div class="photo-next"><span class="fas fa-angle-right"></span></div>
+          <div class="photo-index">test</div>
+        </div>
+      <p class="photo-title"></p>
+      <div class="photo-author">
+          <img class="photo-author-icon" alt=""/>
+          <div class="photo-info">
+              <div class="photo-author-name"></div>
+              <div class="photo-time"></div>
+          </div>
+      </div>
+    </div>
+  </div>
+  <footer id="timeline">
+  </footer>
+</body>
