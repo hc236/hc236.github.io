@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale = 1.0, maximum-scale=1.0, user-scalable=yes" />
+	<title>535 Project - Stackoverflow survey data visualisation</title>
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:400,300,700' rel='stylesheet' type='text/css'>
+    <script src="https://d3js.org/d3.v6.js"></script>
+    <style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        font-family: 'Open Sans Condensed', sans-serif;
+        font-weight: 300;
+        overflow-y: scroll;
+        background-color: aliceblue;
+    }
+
+    header {
+        width: 90%;
+        min-width: 960px;
+        margin: 0;
+        padding: 0;
+        position: relative;
+        text-align: center;
+    }
+
+    header h1 {
+        display: inline-block;
+        font-size: 23px;
+        /* color: #A06535; */
+        /* color:	#EF6B1C; */
+        font-weight: 400;
+        margin: 0;
+        text-align: center;
+        padding: 0;
+        font-weight: 700;
+    }
+    header span.icon {
+        display: inline-block;
+        background-image: url(https://cdn.sstatic.net/Img/unified/sprites.svg?v=fcc0ea44ba27);
+        background-position: 0 -500px;
+        width: 27px;
+        height: 30px;
+    }
+    #chart {
+        width: 90%;
+        min-width: 960px;
+        margin: 0 auto;
+        min-height: 400px;
+        position: relative;
+    }
+    #chart rect{
+        stroke-opacity: 0.5;
+        fill-opacity: 1;
+        fill: #A06535;
+        shape-rendering: crispEdges;
+        stroke-width: 1;
+        stroke: #A06535;
+    }
+
+    #chart path{
+        stroke: #aaaaaa;
+        stroke-width: 0.8;
+    }
+
+    #chart .country{
+        cursor: pointer;
+    }
+
+    #chart .country .label{
+        opacity: 0;
+        font-size: 0.8em;
+    }
+
+    #chart .country:hover rect,
+    #chart .country:focus rect{
+        stroke: #694121;
+        filter:drop-shadow(0px 0px 2px #b5b5b5)
+    }
+
+    #chart .country:hover .countryName,
+    #chart .country:focus .countryName
+    {
+        font-weight: 700;
+        filter:drop-shadow(0px 0px 1px #b5b5b5)
+    }
+
+    #chart .country:hover path,
+    #chart .country:focus path
+    {
+        stroke: #000000;
+        stroke-width: 3;
+    }
+
+    #chart .country:hover .label,
+    #chart .country:focus .label
+    {
+        opacity: 1;
+    }
+    .filter-control{
+        display:inline-block;
+        font: 10px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+        padding: 5px 1.2em 5px 1.2em;
+        background-color:white;
+        /* border-radius: 12px 12px 12px 12px; */
+        border-radius: 1.2em;
+        cursor: pointer;
+        margin-bottom: 0 !important;
+      }
+      .filter-control span{
+        font-size:1.2em;
+        padding: 2px 0.7em;
+        border-radius: 0.7em;
+        cursor: pointer;
+      }
+
+      .filter-control span:hover{
+        background-color:#eeeeee;
+      }
+
+      .filter-control span.selected{
+        background-color: lightgrey;
+      }
+    </style>
+    <script defer src="index.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+            <span class="icon"></span><h1>Stackoverflow Survey Data Visualisation</h1>
+            <div class="controls">
+                <div class="filter-control year">
+                    <span class="selected">2017</span>
+                    <span>2018</span>
+                    <span>2019</span>
+                    <span>2020</span>
+                </div>
+
+                <div class="filter-control subject">
+                    <span class="selected">devType</span>
+                    <span>language</span>
+                    <span>framework</span>
+                    <span>database</span>
+                    <span>platform</span>
+                </div>
+
+                <div class="filter-control type">
+                    <span class="selected">Salary</span>
+                    <span>BigMac</span>
+                    <span>Count</span>
+                    <span>Percent</span>
+                </div>
+            </div>
+        </header>
+        <div id="chart"></div>
+        <footer></footer>
+    </div>
+</body>
+</html>
