@@ -11,7 +11,7 @@ const options = {
 const barWidth = 120, barHeight = 22;
 const margin = {left: 120, right: 20, top: 20, bottom: 20}
 const width = barWidth * (8 + 2)
-const height = barHeight * 30
+const height = barHeight * (30 + 2)
 
 const chart = d3.select('#chart')
 
@@ -34,6 +34,8 @@ controls.addEventListener('click', (event)=>{
         update()
     }
 })
+
+
 const columnNames = {
 "Amazon Web Services (AWS)": "AWS",
 "Developer with a statistics or mathematics background": "Statistician",
@@ -109,6 +111,27 @@ function update(){
 			.attr("width",width)
 			.attr("height",height);
 
+    /*
+    <defs>
+      <filter x="-0.1" y="-0.1" width="1.2" height="1.2" id="solid">
+        <feFlood flood-color="#171717"/>
+        <feComposite in="SourceGraphic" operator="xor" />
+      </filter>
+    </defs>
+    */
+    const filter = svg.append("defs")
+       .append("filter")
+       .attr("x", 0)
+       .attr("y", 0)
+       .attr("width", 1)
+       .attr("height", 1)
+       .attr("id", "solid")
+    filter.append("feFlood")
+        .attr("flood-color", "ivory")
+    filter.append("feComposite")
+        .attr("in", "SourceGraphic")
+        .attr("operator", "atop")
+
     const _colunms = svg.selectAll(".column")
         .data(orderedColunms)
         .join("g")
@@ -122,6 +145,14 @@ function update(){
         .data(dataRows)
         .join("g")
         .attr("class", "country")
+        .on("mouseover", function(e){
+            d3.selectAll(".country").classed("faded", true)
+            d3.select(this).classed("faded", false).classed("selected", true)
+        })
+        .on("mouseleave", function(e){
+            d3.selectAll(".country").classed("faded", false)
+            d3.select(this).classed("selected", false)
+        })
     
     countries.append("path")
         .attr("class", "line")
@@ -156,6 +187,8 @@ function update(){
         bars.append('text')
         .text(d=>d.value && d.value.toFixed(2))
         .attr("class", "label")
+        .attr("filter", "url(#solid)")
+        .attr("fill", "black")
         .attr("transform", function(j){
             return `translate(${-this.getBBox().width + (widthScale(max) - widthScale(j.value)) * 0.5 - 5}, 0)`
         })
@@ -179,6 +212,8 @@ function update(){
             bigMacs.append('text')
                 .text(d=>((d.value)).toFixed(2))
                 .attr("class", "label")
+                .attr("filter", "url(#solid)")
+                .attr("fill", "black")
                 .attr("transform", function(j){
                     return `translate(${-this.getBBox().width - 5}, -10)`
                 })

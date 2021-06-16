@@ -69,37 +69,39 @@
     #chart .country{
         cursor: pointer;
     }
+    #chart .faded{
+        opacity: 0.5;
+    }
 
     #chart .country .label{
         opacity: 0;
         font-size: 0.8em;
+        font-weight: 700;
     }
 
-    #chart .country:hover rect,
-    #chart .country:focus rect{
+    #chart .selected rect
+    {
         stroke: #694121;
         filter:drop-shadow(0px 0px 2px #b5b5b5)
     }
 
-    #chart .country:hover .countryName,
-    #chart .country:focus .countryName
+    #chart .selected .countryName
     {
         font-weight: 700;
         filter:drop-shadow(0px 0px 1px #b5b5b5)
     }
 
-    #chart .country:hover path,
-    #chart .country:focus path
+    #chart .selected path
     {
         stroke: #000000;
         stroke-width: 3;
     }
 
-    #chart .country:hover .label,
-    #chart .country:focus .label
+    #chart .selected .label
     {
         opacity: 1;
     }
+
     .filter-control{
         display:inline-block;
         font: 10px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
