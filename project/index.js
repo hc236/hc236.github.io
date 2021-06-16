@@ -26,7 +26,7 @@ const controls = document.querySelector('.controls');
 controls.addEventListener('click', (event)=>{
     if(event.target.tagName === 'SPAN'){
         [...event.target.parentNode.querySelectorAll('span')].forEach(t=>t.className='')
-        const t = event.target.textContent
+        const t = event.target.getAttribute("value")
         event.target.className = 'selected'
         const name = [...event.target.parentNode.classList].slice(-1)[0]
         options[name] = t;

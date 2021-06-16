@@ -104,7 +104,7 @@
 
     .filter-control{
         display:inline-block;
-        font: 10px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+        font-size: 12px; /*/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;*/
         padding: 5px 1.2em 5px 1.2em;
         background-color:white;
         /* border-radius: 12px 12px 12px 12px; */
@@ -135,25 +135,25 @@
             <span class="icon"></span><h1>Stackoverflow Survey Data Visualisation</h1>
             <div class="controls">
                 <div class="filter-control year">
-                    <span class="selected">2017</span>
-                    <span>2018</span>
-                    <span>2019</span>
-                    <span>2020</span>
+                    <span value="2017" class="selected">2017</span>
+                    <span value="2018">2018</span>
+                    <span value="2019">2019</span>
+                    <span value="2020">2020</span>
                 </div>
 
                 <div class="filter-control subject">
-                    <span class="selected">devType</span>
-                    <span>language</span>
-                    <span>framework</span>
-                    <span>database</span>
-                    <span>platform</span>
+                    <span value="devType" class="selected">Position</span>
+                    <span value="language">Language</span>
+                    <span value="framework">Framework</span>
+                    <span value="database">Database</span>
+                    <span value="platform">Platform</span>
                 </div>
 
                 <div class="filter-control type">
-                    <span class="selected">Salary</span>
-                    <span>BigMac</span>
-                    <span>Count</span>
-                    <span>Percent</span>
+                    <span value="Salary" title="Annual Salary(USD)" class="selected">💵</span>
+                    <span value="BigMac" title="10 BigMac per day">🍔</span>
+                    <span value="Count" title="Number of survey responders">👥</span>
+                    <span value="Percent" title="Responders percentage in the country">%</span>
                 </div>
             </div>
         </header>
